@@ -1,0 +1,47 @@
+create database ecommerce_db;
+
+CREATE TABLE tbl_categoria(
+codigo INT AUTO_INCREMENT PRIMARY KEY,
+nombre VARCHAR(30) unique,
+visible boolean default true,
+categoria_superior INT,
+FOREIGN KEY(categoria_superior) REFERENCES tbl_categoria(codigo)
+);
+
+
+
+CREATE TABLE tbl_marca(
+codigo INT AUTO_INCREMENT PRIMARY KEY,
+nombre VARCHAR(30) unique,
+visible boolean default true
+);
+
+CREATE TABLE tbl_revision(
+codigo INT AUTO_INCREMENT PRIMARY KEY,
+nombre VARCHAR(30) NOT NULL,
+correo VARCHAR(60),
+comentario VARCHAR(200),
+estrellas INT DEFAULT 3,
+fecha DATETIME,
+webid INT,
+FOREIGN KEY(webid) REFERENCES tbl_producto(webid)
+);
+
+CREATE TABLE tbl_producto(
+webid INT AUTO_INCREMENT PRIMARY KEY,
+nombre VARCHAR(30),
+precio DECIMAL(10,2),
+precionuevo DECIMAL(10,2),
+stock INT default 1,
+nuevo boolean default true,
+recomendado boolean default false,
+descripcion VARCHAR(255),
+visible boolean default true,
+CHECK (precio>precionuevo),
+codigo_marca INT,
+codigo_categoria INT,
+FOREIGN KEY(codigo_marca) REFERENCES tbl_marca(codigo),
+FOREIGN KEY(codigo_categoria) REFERENCES tbl_categoria(codigo),
+img VARCHAR(100) default 'demo.png'
+);
+
